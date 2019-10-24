@@ -1,19 +1,23 @@
 package br.com.mouralacerda.cadastroalunos;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListagemAlunos extends AppCompatActivity {
+public class ListagemAlunos extends AppCompatActivity implements AdapterView.OnItemLongClickListener {
 
     ListView listaAlunos;
     List<Aluno> alunos;
@@ -27,11 +31,39 @@ public class ListagemAlunos extends AppCompatActivity {
 
         listaAlunos = findViewById(R.id.lstAlunos);
 
-        ArrayAdapter<Aluno> adp = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, alunos);
+        listaAlunos.setOnItemLongClickListener(this);
 
-        listaAlunos.setAdapter(adp);
+        carregarLista();
 
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+
+
+        dialog.setTitle("Apagar Aluno");
+        dialog.setMessage("Deseja apagar o Aluno "
+                + alunos.get(position).getNome()
+                + " ?");
+        dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                alunos.remove(position);
+                carregarLista();
+            }
+        });
+        dialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        dialog.show();
+
+        return false;
     }
 
     @Override

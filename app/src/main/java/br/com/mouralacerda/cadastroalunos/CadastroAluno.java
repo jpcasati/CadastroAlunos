@@ -75,7 +75,5 @@ public class CadastroAluno extends AppCompatActivity {
         Intent i = new Intent();
         i.putExtra("aluno", a);
         setResult(1, i);
-
-        finish();
     }
 }
